@@ -21,7 +21,11 @@ public class MemberService : IMemberService
 
     public Member GetById(Guid id)
     {
-        throw new NotImplementedException();
+        var member = _membersRepository.Get(id);
+        if (member is null)
+            throw new Exception("Member not found");
+
+        return member;
     }
 
     public Member AddMember(Member member)

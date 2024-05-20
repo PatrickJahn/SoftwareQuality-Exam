@@ -21,4 +21,10 @@ public class MembersController : ControllerBase
     {
        return Ok(_memberService.GetAllMembers());
     }  
+    
+    [HttpGet("{id}")]
+    public async Task<ActionResult<IEnumerable<Member>>> GetById(string id)
+    {
+        return Ok(_memberService.GetById(Guid.Parse(id)));
+    }  
 }

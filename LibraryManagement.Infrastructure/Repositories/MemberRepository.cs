@@ -4,6 +4,7 @@ using System.Linq;
 using LibraryManagement.Core.Common.Interfaces;
 using LibraryManagement.Core.Members;
 using LibraryManagement.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Infrastructure.Repositories
 {
@@ -11,17 +12,20 @@ namespace LibraryManagement.Infrastructure.Repositories
     {
         public void Add(Member entity)
         {
-            throw new NotImplementedException();
+            context.Members.Add(entity);
+            context.SaveChanges();
+        
         }
 
         public void Edit(Member entity)
         {
-            throw new NotImplementedException();
+            context.Entry(entity).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public Member Get(Guid id)
         {
-            throw new NotImplementedException();
+            return context.Members.SingleOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Member> GetAll()
@@ -31,7 +35,9 @@ namespace LibraryManagement.Infrastructure.Repositories
 
         public void Remove(Guid id)
         {
-            throw new NotImplementedException();
+            var member = context.Members.FirstOrDefault(b => b.Id == id);
+            context.Members.Remove(member);
+            context.SaveChanges();
         }
     }
 }

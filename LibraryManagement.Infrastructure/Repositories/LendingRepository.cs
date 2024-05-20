@@ -4,6 +4,7 @@ using System.Linq;
 using LibraryManagement.Core.Common.Interfaces;
 using LibraryManagement.Core.Lendings;
 using LibraryManagement.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Infrastructure.Repositories
 {
@@ -21,17 +22,21 @@ namespace LibraryManagement.Infrastructure.Repositories
 
         public void Add(Lending entity)
         {
-            throw new NotImplementedException();
-        }
+            context.Lendings.Add(entity);
+            context.SaveChanges();        }
 
         public void Edit(Lending entity)
         {
-            throw new NotImplementedException();
+            context.Entry(entity).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Remove(Guid id)
         {
-            throw new NotImplementedException();
+            var lending = context.Lendings.FirstOrDefault(b => b.Id == id);
+            context.Lendings.Remove(lending);
+            context.SaveChanges();
         }
+        
     }
 }
