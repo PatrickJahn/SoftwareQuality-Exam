@@ -1,4 +1,7 @@
+using LibraryManagement.Core.Lendings;
+using LibraryManagement.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Controllers;
 
@@ -7,8 +10,15 @@ namespace LibraryManagement.Controllers;
 public class LendingController : ControllerBase
 {
 
-    public LendingController()
+
+    public LendingController(LibraryContext context)
     {
     }
-        
+
+   
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Lending>>> GetAllCurrentLending()
+    {
+        throw new NotImplementedException();
+    }
 }
