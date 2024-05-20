@@ -1,3 +1,4 @@
+using LibraryManagement.Application.Interfaces;
 using LibraryManagement.Core.Books;
 using LibraryManagement.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -9,17 +10,17 @@ namespace LibraryManagement.Controllers;
 [ApiController]
 public class BooksController : ControllerBase
 {
-    private readonly LibraryContext _context;
+    private readonly IBookService _bookService;
 
-    public BooksController(LibraryContext context)
+    public BooksController(IBookService bookService)
     {
-        _context = context;
+        _bookService = bookService;
     }
 
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
     {
-        return await _context.Books.ToListAsync();
+        return Ok(_bookService.GetAllBooks());
     }
 }

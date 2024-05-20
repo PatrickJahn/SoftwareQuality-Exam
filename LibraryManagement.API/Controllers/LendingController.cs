@@ -1,3 +1,4 @@
+using LibraryManagement.Application.Interfaces;
 using LibraryManagement.Core.Lendings;
 using LibraryManagement.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,16 @@ namespace LibraryManagement.Controllers;
 [ApiController]
 public class LendingController : ControllerBase
 {
+    private readonly ILendingService _lendingService;
 
-
-    public LendingController(LibraryContext context)
+    public LendingController(ILendingService service)
     {
+        _lendingService = service;
     }
-
    
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Lending>>> GetAllCurrentLending()
+    public async Task<ActionResult<IEnumerable<Lending>>> GetAllCurrentLendings()
     {
-        throw new NotImplementedException();
+        return Ok(_lendingService.GetAllCurrentLendings());
     }
 }

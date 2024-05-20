@@ -11,12 +11,12 @@ namespace LibraryManagement.Infrastructure.Repositories
     {
         public IEnumerable<Lending> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Lendings.ToList();
         }
 
         public Lending Get(Guid id)
         {
-            throw new NotImplementedException();
+            return context.Lendings.SingleOrDefault(x => x.Id == id);
         }
 
         public void Add(Lending entity)

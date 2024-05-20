@@ -1,5 +1,9 @@
+using LibraryManagement.Application.Interfaces;
+using LibraryManagement.Application.Services;
 using LibraryManagement.Core.Books;
 using LibraryManagement.Core.Common.Interfaces;
+using LibraryManagement.Core.Lendings;
+using LibraryManagement.Core.Members;
 using LibraryManagement.Infrastructure;
 using LibraryManagement.Infrastructure.Interfaces;
 using LibraryManagement.Infrastructure.Repositories;
@@ -11,6 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<LibraryContext>(opt => opt.UseInMemoryDatabase("HotelBookingDb"));
 builder.Services.AddTransient<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IRepository<Book>, BookRepository>();
+builder.Services.AddScoped<IRepository<Member>, MemberRepository>();
+builder.Services.AddScoped<IRepository<Lending>, LendingRepository>();
+
+builder.Services.AddTransient<IBookService, BookService>();
+builder.Services.AddTransient<IMemberService, MemberService>();
+builder.Services.AddTransient<ILendingService, LendingService>();
 
 
 // Add services to the container.

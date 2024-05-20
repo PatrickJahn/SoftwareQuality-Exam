@@ -1,3 +1,4 @@
+using LibraryManagement.Application.Interfaces;
 using LibraryManagement.Core.Members;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +10,15 @@ namespace LibraryManagement.Controllers;
 public class MembersController : ControllerBase
 {
 
-    public MembersController()
+    private readonly IMemberService _memberService;
+
+    public MembersController(IMemberService service)
     {
+        _memberService = service;
     }
-    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Member>>> GetAll()
     {
-        throw new NotImplementedException();
+       return Ok(_memberService.GetAllMembers());
     }  
 }
