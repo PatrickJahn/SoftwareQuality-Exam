@@ -8,37 +8,30 @@ namespace LibraryManagement.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class LendingController : ControllerBase
+public class LendingController(ILendingService service) : ControllerBase
 {
-    private readonly ILendingService _lendingService;
-
-    public LendingController(ILendingService service)
-    {
-        _lendingService = service;
-    }
-   
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Lending>>> GetAllCurrentLendings()
     {
-        return Ok(_lendingService.GetAllCurrentLendings());
+        return Ok(service.GetAllCurrentLendings());
     }
     
     [HttpGet("{memberId}")]
     public async Task<ActionResult<IEnumerable<Lending>>> GetLendingsByMemberId(Guid memberId)
     {
-        return Ok(_lendingService.GetLendingsByMemberId(memberId));
+        return Ok(service.GetLendingsByMemberId(memberId));
     }
     
     [HttpPost("lend-book")]
     public async Task<ActionResult<IEnumerable<Lending>>> LendBook([FromBody] Guid bookId, Guid memberId)
     {
-        return Ok(_lendingService.LendBook(bookId, memberId));
+        return Ok(service.LendBook(bookId, memberId));
     }
     
     [HttpPost("return-book")]
     public async Task<ActionResult<IEnumerable<Lending>>> ReturnBook([FromBody] Guid bookId, Guid memberId)
     {
-        _lendingService.ReturnBook(bookId, memberId);
+        service.ReturnBook(bookId, memberId);
         return Ok();
     }
 }

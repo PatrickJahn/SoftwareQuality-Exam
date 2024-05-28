@@ -1,3 +1,4 @@
+using LibraryManagement.Infrastructure;
 using LibraryManagement.Core.Books;
 using LibraryManagement.Core.Lendings;
 using LibraryManagement.Core.Members;
@@ -29,11 +30,11 @@ public class DbInitializer : IDbInitializer
         var bookId = Guid.NewGuid();
         List<Book> customers = new List<Book>
         {
-            new Book() { IsAvailableForLending= true, ISBN= "12345678", Author = "Hans Christian", Title = "Den flyvende gryde", Id = Guid.NewGuid(),MaxNumberOfLendingDays = 14},
-            new Book() { IsAvailableForLending= true, ISBN= "13575321", Author = "Hans Christian", Title = "De tre små grise", Id = Guid.NewGuid(), MaxNumberOfLendingDays = 14},
-            new Book() { IsAvailableForLending= true, ISBN= "87654321", Author = "Hans Christian", Title = "Isdronningen", Id = Guid.NewGuid(), MaxNumberOfLendingDays = 21},
-            new Book() { IsAvailableForLending= true, ISBN= "12784671", Author = "Hans Christian", Title = "Den grimme ælling", Id = Guid.NewGuid(),  MaxNumberOfLendingDays = 31},
-            new Book() { IsAvailableForLending= false, ISBN= "12415222", Author = "Julie Mansen", Title = "Pigen med tændstikkerne", Id = bookId, MaxNumberOfLendingDays = 31},
+            new Book() { IsAvailable= true, ISBN= "12345678", Author = "Hans Christian", Title = "Den flyvende gryde",MaxNumberOfLendingDays = 14},
+            new Book() { IsAvailable= true, ISBN= "13575321", Author = "Hans Christian", Title = "De tre små grise",  MaxNumberOfLendingDays = 14},
+            new Book() { IsAvailable= true, ISBN= "87654321", Author = "Hans Christian", Title = "Isdronningen",  MaxNumberOfLendingDays = 21},
+            new Book() { IsAvailable= true, ISBN= "12784671", Author = "Hans Christian", Title = "Den grimme ælling",   MaxNumberOfLendingDays = 31},
+            new Book() { IsAvailable= false, ISBN= "12415222", Author = "Julie Mansen", Title = "Pigen med tændstikkerne", MaxNumberOfLendingDays = 31},
 
         };
 

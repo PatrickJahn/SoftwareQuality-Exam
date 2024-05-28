@@ -9,7 +9,7 @@ public interface ILendingService
     IEnumerable<Lending> GetLendingsByMemberId(Guid memberId);
     IEnumerable<Lending> GetLendingsByBookId(Guid bookId);
     
-    Lending? LendBook(Guid bookId, Guid memberId);
+    Task<Lending?> LendBook(Guid bookId, Guid memberId);
     void ReturnBook(Guid bookId, Guid memberId);
     
 }

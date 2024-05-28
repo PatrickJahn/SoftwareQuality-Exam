@@ -7,24 +7,17 @@ namespace LibraryManagement.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MembersController : ControllerBase
+public class MembersController(IMemberService service) : ControllerBase
 {
-
-    private readonly IMemberService _memberService;
-
-    public MembersController(IMemberService service)
-    {
-        _memberService = service;
-    }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Member>>> GetAll()
     {
-       return Ok(_memberService.GetAllMembers());
+       return Ok(service.GetAllMembers());
     }  
     
     [HttpGet("{id}")]
     public async Task<ActionResult<IEnumerable<Member>>> GetById(string id)
     {
-        return Ok(_memberService.GetById(Guid.Parse(id)));
+        return Ok(service.GetById(Guid.Parse(id)));
     }  
 }

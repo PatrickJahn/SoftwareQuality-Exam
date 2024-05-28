@@ -44,11 +44,11 @@ public class LendingService: ILendingService
        return _lendingRepository.GetAll().SingleOrDefault(x => x.BookId == bookId && x.ReturnedOn == null);
     }
 
-    public Lending? LendBook(Guid bookId, Guid memberId)
+    public async Task<Lending?>  LendBook(Guid bookId, Guid memberId)
     {
         
         // Check if book exists 
-        var book = _bookService.GetBookById(bookId);
+        var book = await _bookService.GetBookById(bookId);
 
         if (book == null)
         {
@@ -67,7 +67,7 @@ public class LendingService: ILendingService
         var lending = GetCurrentLendingOfBook(bookId);
         var bookAlreadyLendOut = lending != null && lending.ReturnedOn == null;
 
-        if (!book.IsAvailableForLending || bookAlreadyLendOut || member.Banned)
+        if (!book.IsAvailable || bookAlreadyLendOut || member.Banned)
         {
             throw new Exception("Could not lend book");
         } 

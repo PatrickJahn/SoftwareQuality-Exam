@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using LibraryManagement.Infrastructure;
 using LibraryManagement.Core.Common.Interfaces;
 using LibraryManagement.Core.Members;
 using LibraryManagement.Infrastructure;
@@ -10,10 +12,10 @@ namespace LibraryManagement.Infrastructure.Repositories
 {
     public class MemberRepository(LibraryContext context) : IRepository<Member>
     {
-        public void Add(Member entity)
+        public async Task Add(Member entity)
         {
             context.Members.Add(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         
         }
 
@@ -36,8 +38,18 @@ namespace LibraryManagement.Infrastructure.Repositories
         public void Remove(Guid id)
         {
             var member = context.Members.FirstOrDefault(b => b.Id == id);
-            context.Members.Remove(member);
+            if (member != null) context.Members.Remove(member);
             context.SaveChanges();
+        }
+
+        public Member Find(Expression<Func<Member, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Member> FindAll(Expression<Func<Member, bool>> predicate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

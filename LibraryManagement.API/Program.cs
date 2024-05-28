@@ -1,10 +1,10 @@
+using LibraryManagement.Infrastructure;
 using LibraryManagement.Application.Interfaces;
 using LibraryManagement.Application.Services;
 using LibraryManagement.Core.Books;
 using LibraryManagement.Core.Common.Interfaces;
 using LibraryManagement.Core.Lendings;
 using LibraryManagement.Core.Members;
-using LibraryManagement.Infrastructure;
 using LibraryManagement.Infrastructure.Interfaces;
 using LibraryManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -38,13 +38,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     // Initialize the database.
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var dbContext = services.GetService<LibraryContext>();
-        var dbInitializer = services.GetService<IDbInitializer>();
-        dbInitializer.Initialize(dbContext);
-    }
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetService<LibraryContext>();
+    var dbInitializer = services.GetService<IDbInitializer>();
+    if (dbContext != null) dbInitializer?.Initialize(dbContext);
 }
 
 app.UseHttpsRedirection();

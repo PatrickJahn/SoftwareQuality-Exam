@@ -11,14 +11,15 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
+        <PackageReference Include="EntityFrameworkCore.Testing.Moq" Version="8.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.4.24267.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
-        <PackageReference Include="NUnit" Version="3.14.0"/>
-        <PackageReference Include="NUnit.Analyzers" Version="3.9.0"/>
-        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>
+        <PackageReference Include="Moq" Version="4.20.70" />
+        <PackageReference Include="xunit" Version="2.8.1" />
     </ItemGroup>
-
     <ItemGroup>
-        <Using Include="NUnit.Framework"/>
+      <ProjectReference Include="..\LibraryManagement.Application\LibraryManagement.Application.csproj" />
+      <ProjectReference Include="..\LibraryManagement.Core\LibraryManagement.Core.csproj" />
     </ItemGroup>
 
 </Project>
