@@ -28,10 +28,5 @@ public class LendingController(ILendingService service) : ControllerBase
         return Ok(service.LendBook(bookId, memberId));
     }
     
-    [HttpPost("return-book")]
-    public async Task<ActionResult<IEnumerable<Lending>>> ReturnBook([FromBody] Guid bookId, Guid memberId)
-    {
-        service.ReturnBook(bookId, memberId);
-        return Ok();
-    }
+
 }
