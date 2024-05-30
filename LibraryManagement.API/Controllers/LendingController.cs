@@ -1,4 +1,5 @@
 using LibraryManagement.Application.Interfaces;
+using LibraryManagement.Controllers.Dtos;
 using LibraryManagement.Core.Lendings;
 using LibraryManagement.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -8,25 +9,52 @@ namespace LibraryManagement.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class LendingController(ILendingService service) : ControllerBase
+public class LendingController(ILendingService _lendingService) : ControllerBase
 {
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Lending>>> GetAllCurrentLendings()
-    {
-        return Ok(service.GetAllCurrentLendings());
-    }
+
     
-    [HttpGet("{memberId}")]
-    public async Task<ActionResult<IEnumerable<Lending>>> GetLendingsByMemberId(Guid memberId)
+    [HttpGet("current")]
+    public ActionResult<IEnumerable<Lending>> GetAllCurrentLendings()
     {
-        return Ok(service.GetLendingsByMemberId(memberId));
+        var lendings = _lendingService.GetAllCurrentLendings();
+        return Ok(lendings);
     }
-    
-    [HttpPost("lend-book")]
-    public async Task<ActionResult<IEnumerable<Lending>>> LendBook([FromBody] Guid bookId, Guid memberId)
+
+    [HttpGet("overdue")]
+    public ActionResult<IEnumerable<Lending>> GetAllLendingsOverdue()
     {
-        return Ok(service.LendBook(bookId, memberId));
+        var lendings = _lendingService.GetAllLendingsOverdue();
+        return Ok(lendings);
     }
-    
+
+    [HttpGet("member/{memberId}")]
+    public ActionResult<IEnumerable<Lending>> GetLendingsByMemberId(Guid memberId)
+    {
+        var lendings = _lendingService.GetLendingsByMemberId(memberId);
+        return Ok(lendings);
+    }
+
+    [HttpGet("book/{bookId}")]
+    public ActionResult<IEnumerable<Lending>> GetLendingsByBookId(Guid bookId)
+    {
+        var lendings = _lendingService.GetLendingsByBookId(bookId);
+        return Ok(lendings);
+    }
+
+
+    [HttpPost("lend")]
+    public async Task<ActionResult<Lending>> LendBook([FromBody] LendRequest request)
+    {
+        try
+        {
+            var lending = await _lendingService.LendBook(request.BookId, request.MemberId);
+            return Ok(lending);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
 
 }
