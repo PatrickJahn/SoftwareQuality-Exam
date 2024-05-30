@@ -26,17 +26,18 @@ public class LendingService: ILendingService
 
     public IEnumerable<Lending> GetAllLendingsOverdue()
     {
-        throw new NotImplementedException();
+        return _lendingRepository.GetAll().Where(x => x.ShouldBeReturnedBefore < DateTime.UtcNow);
     }
 
     public IEnumerable<Lending> GetLendingsByMemberId(Guid memberId)
     {
-        throw new NotImplementedException();
+        return _lendingRepository.GetAll().Where(x => x.MemberId == memberId);
     }
 
     public IEnumerable<Lending> GetLendingsByBookId(Guid bookId)
     {
-        throw new NotImplementedException();
+       return _lendingRepository.GetAll().Where(x => x.BookId == bookId);
+        
     }
     
     public Lending? GetCurrentLendingOfBook(Guid bookId)
@@ -72,7 +73,7 @@ public class LendingService: ILendingService
             throw new Exception("Could not lend book");
         } 
         
-        _lendingRepository.Add(new Lending()
+        await _lendingRepository.Add(new Lending()
         {
             Id = Guid.NewGuid(),
             BookId = bookId,
@@ -83,8 +84,5 @@ public class LendingService: ILendingService
         return lending;
     }
 
-    public void ReturnBook(Guid bookId, Guid memberId)
-    {
-        throw new NotImplementedException();
-    }
+
 }

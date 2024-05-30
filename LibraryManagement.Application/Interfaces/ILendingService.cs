@@ -10,6 +10,5 @@ public interface ILendingService
     IEnumerable<Lending> GetLendingsByBookId(Guid bookId);
     
     Task<Lending?> LendBook(Guid bookId, Guid memberId);
-    void ReturnBook(Guid bookId, Guid memberId);
     
 }

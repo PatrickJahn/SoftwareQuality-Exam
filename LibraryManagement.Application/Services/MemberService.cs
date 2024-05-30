@@ -28,13 +28,27 @@ public class MemberService : IMemberService
         return member;
     }
 
-    public Member AddMember(Member member)
+    public async Task<Member> AddMember(Member member)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(member.Email) || string.IsNullOrEmpty(member.Name) || string.IsNullOrEmpty(member.cprNr))
+        {
+            throw new ArgumentException("Email, Name, and cpr nr. are required.");
+        }
+                
+        await _membersRepository.Add(member);
+        
+        return member;
     }
 
-    public Member DeleteMember(Guid id)
+    public async Task DeleteMember(Guid id)
     {
-        throw new NotImplementedException();
+        var member = _membersRepository.Get(id);
+        if (member == null)
+        {
+            throw new KeyNotFoundException("Member not found.");
+        }
+
+        _membersRepository.Remove(id);
+        await Task.CompletedTask;
     }
 }

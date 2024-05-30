@@ -6,6 +6,9 @@ public class Member
     public string Name { get; set; }
     public string Email { get; set; }
     
+    public string cprNr { get; set; }
+
+    
     public bool Banned { get; set; }
 
 }
