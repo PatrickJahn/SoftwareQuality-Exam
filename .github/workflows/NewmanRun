@@ -1,5 +1,8 @@
 - uses: actions/checkout@master
 - uses: matt-ball/newman-action@master
   with:
-    collection: postman_collection.json
-    environment: postman_environment.json
+    collection: LibraryManagement.Tests.Integration\LibraryManagement.postman_collection.json
+    environment: LibraryManagement.Tests.Integration\LibraryManagement.postman_collection.json
+
+
+
