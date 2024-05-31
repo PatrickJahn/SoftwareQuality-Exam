@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       buildConfiguration: Release
+      ASPNETCORE_URLS: 'https://+:7226;http://+:5058'
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
