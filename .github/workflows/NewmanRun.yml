@@ -25,24 +25,19 @@ jobs:
       # Build
       - name: Build
         run: dotnet build 'LibraryManagement.API/LibraryManagement.API.csproj' --configuration ${{ env.buildConfiguration }}
-        displayName: Build
 
       # Test
       - name: Testing
         run: dotnet test 'LibraryManagement.Tests.Integration/LibraryManagement.Tests.Integration.csproj' --configuration ${{ env.buildConfiguration }}
-        displayName: Testing
 
       # Run the Web API in the background
       - name: Run the WebApi in the background
         run: dotnet ${{ github.workspace }}/LibraryManagement.API/bin/${{ env.buildConfiguration }}/LibraryManagement.API.dll &
-        displayName: Run the WebApi in the background
 
       # Install Newman
       - name: Install Newman
         run: npm install newman -g
-        displayName: Install Newman
 
       # Run Postman tests
       - name: Run Postman tests
         run: newman run ${{ github.workspace }}/LibraryManagement.Tests.Integration/HotelBooking.postman_collection.json -k -r cli
-        displayName: Run Postman tests
