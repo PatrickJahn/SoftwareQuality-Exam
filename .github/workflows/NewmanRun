@@ -1,8 +1,15 @@
-- uses: actions/checkout@master
-- uses: matt-ball/newman-action@master
-  with:
-    collection: LibraryManagement.Tests.Integration\LibraryManagement.postman_collection.json
-    environment: LibraryManagement.Tests.Integration\LibraryManagement.postman_collection.json
+name: Newman Run
+on:
+  pull_request:
+    branches:
+    - master
 
-
-
+jobs:
+  newman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: LibraryManagement.Tests.Integration\LibraryManagement.postman_collection.json
+          environment: LibraryManagement.Tests.Integration\LibraryManagement.postman_collection.json
