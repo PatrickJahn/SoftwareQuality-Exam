@@ -40,4 +40,4 @@ jobs:
 
       # Run Postman tests
       - name: Run Postman tests
-        run: newman run ${{ github.workspace }}/HotelBooking.postman_collection.json -k -r cli
+        run: newman run $(Build.SourcesDirectory)/HotelBooking.postman_collection.json -k -r cli
