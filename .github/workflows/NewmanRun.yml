@@ -1,54 +1,38 @@
-name: Newman CLI
-
+name: Build&Tests
 
 on:
-
   push: 
     branches: [ "main" ]
-
   pull_request:
     branches: [ "main" ]
-
   workflow_dispatch:
 
 jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  build:
+      # Build
+      - name: Build
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - run: dotnet build '**/*.csproj' --configuration $(buildConfiguration)
 
-# Build
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: build
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)' # Update this to match your need
+      # Test
+      - name: Testing
+        run: dotnet test '**/*Tests/*.csproj' --configuration $(buildConfiguration)
 
-# Test
-- task: DotNetCoreCLI@2
-  displayName: Testing
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+      # Run the Web API in the background
+      - name: Run the WebApi in the background
+        run: dotnet $(Build.SourcesDirectory)/LibraryManagement.API/bin/$(buildConfiguration)/LibraryManagement.API.dll &
 
-# Run the Web API in the background
-- task: CmdLine@2
-  displayName: Run the WebApi in the background
-  inputs:
-            script: 'dotnet $(Build.SourcesDirectory)/LibraryManagement.API/bin/$(buildConfiguration)/LibraryManagement.API.dll &'
+      # Install Newman
+      - name: Install Newman
+        run: npm install newman -g
 
-# Install Newman
-- task: Npm@1
-  displayName: Install Newman
-  inputs:
-    command: 'custom'
-    customCommand: 'install newman -g'
-
-#Run Postman tests
-- task: CmdLine@2
-  displayName: Run Postman tests
-  inputs:
-    script: 'newman run $(Build.SourcesDirectory)/LibraryManagement.Tests.Integration/HotelBooking.postman_collection.json -k -r cli'
-      - name: install newman
-        run: 
-          npm install -g newman
+      # Run Postman tests
+      - name: Run Postman tests
+        run: newman run $(Build.SourcesDirectory)/LibraryManagement.Tests.Integration/HotelBooking.postman_collection.json -k -r cli
