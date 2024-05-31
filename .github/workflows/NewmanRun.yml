@@ -1,5 +1,4 @@
 name: Build&Tests
-
 on:
   push: 
     branches: [ "main" ]
@@ -10,24 +9,29 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      buildConfiguration: Release
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Build
-      - name: Build
+      # Set up .NET
+      - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x'
-      - run: dotnet build '**/*.csproj' --configuration $(buildConfiguration)
+
+      # Build
+      - name: Build
+        run: dotnet build '**/*.csproj' --configuration ${{ env.buildConfiguration }}
 
       # Test
       - name: Testing
-        run: dotnet test '**/*Tests/*.csproj' --configuration $(buildConfiguration)
+        run: dotnet test '**/*Tests/*.csproj' --configuration ${{ env.buildConfiguration }}
 
       # Run the Web API in the background
       - name: Run the WebApi in the background
-        run: dotnet $(Build.SourcesDirectory)/LibraryManagement.API/bin/$(buildConfiguration)/LibraryManagement.API.dll &
+        run: dotnet ${{ github.workspace }}/LibraryManagement.API/bin/${{ env.buildConfiguration }}/LibraryManagement.API.dll &
 
       # Install Newman
       - name: Install Newman
@@ -35,4 +39,4 @@ jobs:
 
       # Run Postman tests
       - name: Run Postman tests
-        run: newman run $(Build.SourcesDirectory)/LibraryManagement.Tests.Integration/HotelBooking.postman_collection.json -k -r cli
+        run: newman run ${{ github.workspace }}/LibraryManagement.Tests.Integration/HotelBooking.postman_collection.json -k -r cli
