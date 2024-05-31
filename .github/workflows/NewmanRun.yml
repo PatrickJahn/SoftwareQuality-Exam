@@ -28,7 +28,7 @@ jobs:
 
       # Test
       - name: Testing
-        run: dotnet test 'LibraryManagement.Tests.Integration/LibraryManagement.Tests.Integration.csproj' --configuration ${{ env.buildConfiguration }}
+        run: dotnet test 'LibraryManagement.Tests.Integration/LibraryManagement.UnitTests.csproj' --configuration ${{ env.buildConfiguration }}
 
       # Run the Web API in the background
       - name: Run the WebApi in the background
