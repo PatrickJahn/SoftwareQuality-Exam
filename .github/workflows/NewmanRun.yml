@@ -1,15 +1,23 @@
-name: Newman Run
+name: Newman CLI
+
+
 on:
+
+  push: 
+    branches: [ "main" ]
+
   pull_request:
     branches: [ "main" ]
 
-workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-  newman:
+
+  build:
+
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - uses: matt-ball/newman-action@master
         with:
           collection: LibraryManagement.Tests.Integration\LibraryManagement.postman_collection.json
