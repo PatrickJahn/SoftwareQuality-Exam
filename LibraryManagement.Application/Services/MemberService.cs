@@ -30,7 +30,7 @@ public class MemberService : IMemberService
 
     public async Task<Member> AddMember(Member member)
     {
-        if (string.IsNullOrEmpty(member.Email) || string.IsNullOrEmpty(member.Name) || string.IsNullOrEmpty(member.cprNr))
+        if (string.IsNullOrEmpty(member.Email) || string.IsNullOrEmpty(member.Name) || string.IsNullOrEmpty(member.CprNr))
         {
             throw new ArgumentException("Email, Name, and cpr nr. are required.");
         }

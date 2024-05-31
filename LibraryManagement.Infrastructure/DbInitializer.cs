@@ -41,7 +41,7 @@ public class DbInitializer : IDbInitializer
         var memberGuid = Guid.NewGuid();
         List<Member> members = new List<Member>
         {
-            new Member { Email = "first@member.dk", Name = "Member1", Id = memberGuid}
+            new Member { Email = "first@member.dk", Name = "Member1", Id = memberGuid, CprNr = "123121"}
         };
         
         List<Lending> lendings = new List<Lending>
