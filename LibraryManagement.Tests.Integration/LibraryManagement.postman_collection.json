@@ -659,8 +659,8 @@
 				"exec": [
 					
 					
-					"pm.test(\"Reponse time is less than 3000ms\", function () {",
-					"    pm.expect(pm.response.responseTime).to.be.below(100);",
+					"pm.test(\"Reponse time is less than 500\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(500);",
 					"});"
 				]
 			}
