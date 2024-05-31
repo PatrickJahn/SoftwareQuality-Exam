@@ -29,7 +29,15 @@ jobs:
         run: 
           npm install -g newman
 
+
+
       - name: Run collection
         run:
           newman run LibraryManagement.Tests.Integration/LibraryManagement.postman_collection.json 
-         
+
+      - name: Run the WebApi in the background
+        run: CmdLine@2
+         inputs:
+            script: 'dotnet $(Build.SourcesDirectory)/LibraryManagement.API/bin/$(buildConfiguration)/LibraryManagement.API.dll &'
+
+             
