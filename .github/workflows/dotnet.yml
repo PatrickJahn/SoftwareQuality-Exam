@@ -26,3 +26,21 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+
+  displayName: Run the WebApi in the background
+  inputs:
+    script: 'dotnet $(Build.SourcesDirectory)/SoftwareQuality-Exam.LibraryManagement.API/bin/$(buildConfiguration)/SoftwareQuality-Exam.LibraryManagement.API.dll &'
+
+# Install Newman
+- task: Npm@1
+  displayName: Install Newman
+  inputs:
+    command: 'custom'
+    customCommand: 'install newman -g'
+
+#Run Postman tests
+- task: CmdLine@2
+  displayName: Run Postman tests
+  inputs:
+    script: 'newman run $(Build.SourcesDirectory)/Postman/HotelBooking.postman_collection.json -k -r cli'
