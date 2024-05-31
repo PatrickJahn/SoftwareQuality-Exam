@@ -109,9 +109,10 @@ namespace LibraryManagement.UnitTests
 
             _bookRepositoryMock.Setup(repo => repo.Get(bookId)).Returns((Book)null);
 
-            var result = _bookService.GetBookById(bookId);
+            var task = _bookService.GetBookById(bookId);
+            
 
-            Assert.Null(result);
+            Assert.Null(task.Result);
         }
 
         [Theory]
@@ -136,7 +137,7 @@ namespace LibraryManagement.UnitTests
 
             var result = _bookService.GetBookByIsbn(isbn);
 
-            Assert.Null(result);
+            Assert.Null(result.Result);
         }
 
         [Fact]
