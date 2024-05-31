@@ -1,0 +1,706 @@
+{
+	"info": {
+		"_postman_id": "9c77dc90-a111-4f33-b596-c10e8b939116",
+		"name": "LibraryManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35393167",
+		"_collection_link": "https://lunar-escape-680355.postman.co/workspace/Team-Workspace~efe739a3-44d3-4baf-8ac9-e470297e2cd1/collection/27369602-9c77dc90-a111-4f33-b596-c10e8b939116?action=share&source=collection_link&creator=35393167"
+	},
+	"item": [
+		{
+			"name": "books",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "get all books",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Books",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all available books",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books/available",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										"available"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get book by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200 or 404\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200,404])",
+											"});",
+											"",
+											"pm.test(\"Response has a valid book\", function () {",
+											"    if(pm.response.code == 200){",
+											"        var jsonData = pm.response.json();",
+											"        pm.expect(jsonData).to.have.property(\"id\");",
+											"        pm.expect(jsonData).to.have.property(\"title\");",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											"var ids = pm.collectionVariables.get(\"bookIdsTemp\")",
+											"",
+											"ids = JSON.parse(ids);",
+											"",
+											"var currentId = ids.shift();",
+											"console.log(currentId)",
+											"pm.collectionVariables.set(\"bookId\", currentId);",
+											"",
+											"",
+											"if (ids && ids.length>0) {",
+											"    pm.collectionVariables.set(\"bookIdsTemp\", JSON.stringify(ids));",
+											"pm.execution.setNextRequest(pm.info.requestName);",
+											"} else {",
+											"   var initialIds =  pm.collectionVariables.get(\"bookIds\")",
+											"       pm.collectionVariables.set(\"bookIdsTemp\", initialIds);",
+											"",
+											"    pm.execution.setNextRequest(null)",
+											"",
+											"}",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books/{{bookId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										"{{bookId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get book by isbn",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has a valid book\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"isbn\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books/isbn/:isbn",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										"isbn",
+										":isbn"
+									],
+									"variable": [
+										{
+											"key": "isbn",
+											"value": "13575321"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "add book",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Response has a valid book\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"});",
+											"",
+											"// Save the created book ID for future use",
+											"pm.environment.set(\"createdBookId\", pm.response.json().id);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"New Book\",\n    \"author\": \"Author Name\",\n    \"isbn\": \"1234567890123\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/books",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add book for deletion",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"// Store the created book ID in an environment variable",
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"createdBookForDeletionId\", jsonData.id);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"New Book for Deletion\",\n    \"author\": \"Author Name\",\n    \"isbn\": \"1234567890123\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/books",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT",
+					"item": [
+						{
+							"name": "update book",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"{{createdBookId}}\",\n    \"title\": \"Updated Book Title\",\n    \"author\": \"Updated Author Name\",\n    \"isbn\": \"1234567890123\"\n}\n\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/books/{{createdBookId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										"{{createdBookId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE",
+					"item": [
+						{
+							"name": "remove. book",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"// Optionally, clear the environment variable after deletion",
+											"pm.environment.unset(\"createdBookForDeletionId\");",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books/{{createdBookForDeletionId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										"{{createdBookForDeletionId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Lendings",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "get all current landings",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is an array\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Lending/current",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Lending",
+										"current"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all endings overdue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is an array\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Lending/overdue",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Lending",
+										"overdue"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get lending by memberId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is an array\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Lending/member/{{memberId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Lending",
+										"member",
+										"{{memberId}}"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get lending by book id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is an array\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Lending/book/{{bookId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Lending",
+										"book",
+										"{{bookId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "lend book",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response is an object when status is 200\", function () {",
+											"    if(pm.response.code === 200) {",
+											"        var jsonData = pm.response.json();",
+											"        pm.expect(jsonData).to.be.an('object');",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"packages": {},
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"bookId\": \"{{bookId}}\",\n    \"memberId\": \"{{memberId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/Lending/lend",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Lending",
+										"lend"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT",
+					"item": []
+				},
+				{
+					"name": "DELETE",
+					"item": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"pm.test(\"Reponse time is less than 500ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(100);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7226/api",
+			"type": "string"
+		},
+		{
+			"key": "createdBookId",
+			"value": "ebc3ccb4-1bc8-4f53-9275-a775a6cb5c9c",
+			"type": "string"
+		},
+		{
+			"key": "createdBookForDeletionId",
+			"value": "56ee28f2-afe3-4d48-9669-13d38e14ed70",
+			"type": "string"
+		},
+		{
+			"key": "memberId",
+			"value": "f5ed0db5-8a18-42e5-a70c-d37c5aa59373"
+		},
+		{
+			"key": "bookId",
+			"value": "ebc3ccb4-1bc8-4f53-9275-a775a6cb5c9c"
+		},
+		{
+			"key": "bookIds",
+			"value": "[ \"ebc3ccb4-1bc8-4f53-9275-a775a6cb5c9c\", \"asd123\", \"\"]",
+			"type": "string"
+		},
+		{
+			"key": "bookIdsTemp",
+			"value": "[ \"ebc3ccb4-1bc8-4f53-9275-a775a6cb5c9c\", \"asd123\", \"ebc3ccb4-1bc8-4f53-9275-a775a6cb5c91\"]",
+			"type": "string"
+		}
+	]
+}

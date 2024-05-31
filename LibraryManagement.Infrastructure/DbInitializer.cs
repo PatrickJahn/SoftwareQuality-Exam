@@ -30,7 +30,7 @@ public class DbInitializer : IDbInitializer
         var bookId = Guid.NewGuid();
         List<Book> customers = new List<Book>
         {
-            new Book() { IsAvailable= true, ISBN= "12345678", Author = "Hans Christian", Title = "Den flyvende gryde",MaxNumberOfLendingDays = 14},
+            new Book() { Id = Guid.Parse("ebc3ccb4-1bc8-4f53-9275-a775a6cb5c9c"), IsAvailable= true, ISBN= "12345678", Author = "Hans Christian", Title = "Den flyvende gryde",MaxNumberOfLendingDays = 14},
             new Book() { IsAvailable= true, ISBN= "13575321", Author = "Hans Christian", Title = "De tre små grise",  MaxNumberOfLendingDays = 14},
             new Book() { IsAvailable= true, ISBN= "87654321", Author = "Hans Christian", Title = "Isdronningen",  MaxNumberOfLendingDays = 21},
             new Book() { IsAvailable= true, ISBN= "12784671", Author = "Hans Christian", Title = "Den grimme ælling",   MaxNumberOfLendingDays = 31},
