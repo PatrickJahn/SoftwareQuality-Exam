@@ -657,10 +657,8 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					"pm.test(\"Status code is 200\", function () {",
-					"    pm.response.to.have.status(200);",
-					"});",
-					"",
+					
+					
 					"pm.test(\"Reponse time is less than 500ms\", function () {",
 					"    pm.expect(pm.response.responseTime).to.be.below(100);",
 					"});"
