@@ -141,6 +141,21 @@ namespace LibraryManagement.UnitTests;
 
             await Assert.ThrowsAsync<Exception>(async () => await _lendingService.LendBook(bookId, memberId));
         }
+        
+        [Fact]
+        public async Task LendBook_ThrowsException_WhenMemberIsBanned()
+        {
+            var bookId = Guid.NewGuid();
+            var memberId = Guid.NewGuid();
+
+            var book = new Book { Id = bookId, IsAvailable = true };
+            var member = new Member { Id = memberId, Banned = true};
+
+            _bookServiceMock.Setup(service => service.GetBookById(bookId)).ReturnsAsync(book);
+            _memberServiceMock.Setup(service => service.GetById(memberId)).Returns(member);
+
+            await Assert.ThrowsAsync<Exception>(async () => await _lendingService.LendBook(bookId, memberId));
+        }
 
         [Fact]
         public async Task LendBook_ThrowsException_WhenBookIsNotAvailable()
