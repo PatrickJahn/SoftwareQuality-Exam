@@ -30,7 +30,7 @@ jobs:
 
       # Test
       - name: Testing
-        run: dotnet test 'LibraryManagement.UnitTests/LibraryManagement.UnitTests.csproj' --configuration ${{ env.buildConfiguration }}
+        run: dotnet test 'LibraryManagement.UnitTests/LibraryManagement.UnitTests.csproj' --configuration ${{ env.buildConfiguration }} /p:CollectCoverage=true /p:Threshold=80
 
       # Run the Web API in the background
       - name: Run the WebApi in the background
